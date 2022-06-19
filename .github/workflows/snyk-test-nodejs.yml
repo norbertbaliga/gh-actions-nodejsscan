@@ -1,4 +1,4 @@
-name: Snyk NodeJS Scan
+name: Snyk NodeJS Scan (SCA - dependency)
 
 on:
   push:
@@ -18,14 +18,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Run Snyk to check for vulnerabilities
+    - name: Run Snyk test to check for dependency vulnerabilities
       uses: snyk/actions/node@master
       continue-on-error: true # To make sure that SARIF upload gets called
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
-        args: --sarif-file-output=snyk.sarif
-    - name: Upload result to GitHub Code Scanning
+        args: --sarif-file-output=snyk_test.sarif
+    - name: Upload snyk test result to GitHub Code Scanning
       uses: github/codeql-action/upload-sarif@v2
       with:
-        sarif_file: snyk.sarif
+        sarif_file: snyk_test.sarif
+        category: snyk_SCA
