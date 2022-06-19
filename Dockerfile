@@ -1,4 +1,4 @@
-FROM node:8
+FROM node:18.3.0-buster-slim
 WORKDIR /app
 COPY package.json /app
 RUN npm install && npm install pm2 -g
