@@ -18,17 +18,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - uses: snyk/actions/setup@master
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 14
     - name: Run Snyk code to check for code vulnerabilities
-      id: snyk_code
-      uses: snyk/actions/node@master
-      continue-on-error: true # To make sure that SARIF upload gets called
+      run: snyk code test --sarif | tee snyk_code.sarif
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-        command: code
-        args: test --sarif
-    - name: Save Snyk result output to file
-      run: echo ${{ steps.snyk_code.outputs.stdout }} | tee snyk_code.sarif
     - name: Upload snyk code result to GitHub Code Scanning
       uses: github/codeql-action/upload-sarif@v2
       with:
