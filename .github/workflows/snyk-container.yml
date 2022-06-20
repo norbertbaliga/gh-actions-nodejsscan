@@ -1,4 +1,4 @@
-name: Snyk NodeJS Scan (SCA - dependency)
+name: Snyk NodeJS Scan (Container)
 
 on:
   push:
@@ -12,22 +12,26 @@ permissions:
 jobs:
   snyk:
     permissions:
-      contents: read
+      contents: read 
       security-events: write
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     
-    - name: Run Snyk test to check for dependency vulnerabilities
-      uses: snyk/actions/node@master
+    - name: Build a Docker image
+      run: docker build -t myvulnapp .
+    
+    - name: Run Snyk to check Docker image for vulnerabilities
       continue-on-error: true
+      uses: snyk/actions/docker@master
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
-        args: --sarif-file-output=snyk_test.sarif
+        image: myvulnapp
+        args: --file=Dockerfile
     
-    - name: Upload snyk test result to GitHub Code Scanning
+    - name: Upload result to GitHub Code Scanning
       uses: github/codeql-action/upload-sarif@v2
       with:
-        sarif_file: snyk_test.sarif
-        category: snyk_SCA
+        sarif_file: snyk.sarif
+        category: snyk_Container
