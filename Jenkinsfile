@@ -20,7 +20,7 @@ pipeline {
     stage('Upload SBOM to Dependency-tracker') {
       steps {
         withCredentials([string(credentialsId: '9443aca9-48ed-48ac-bf1c-c572a6a9f74d', variable: 'API_KEY')]) {
-          dependencyTrackPublisher dependencyTrackUrl: 'http://192.168.99.1:8081', artifact: 'vuln-nodejs-app_syft-sbom.xml', projectName: 'Jenkins-vuln-NodeJS-app', projectVersion: '1.0', autoCreateProjects: true, synchronous: true, dependencyTrackApiKey: API_KEY
+          dependencyTrackPublisher dependencyTrackUrl: 'http://192.168.99.1:8081', dependencyTrackFrontendUrl: 'http://192.168.99.1:8080',artifact: 'vuln-nodejs-app_syft-sbom.xml', projectName: 'Jenkins-vuln-NodeJS-app2', projectVersion: '1.0', autoCreateProjects: true, synchronous: true, dependencyTrackApiKey: API_KEY
         }
       }
     }
