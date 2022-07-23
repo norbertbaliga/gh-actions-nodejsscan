@@ -5,13 +5,6 @@ pipeline {
     } 
   }
   stages {
-
-    stage('Checkout Scm') {
-      steps {
-        git 'https://github.com/baliganorbi/gh-actions-nodejsscan.git'
-      }
-    }
-
     stage('Build docker image') {
       steps {
         sh 'docker build -t vuln-nodejs-app:latest -f ./Dockerfile .'
