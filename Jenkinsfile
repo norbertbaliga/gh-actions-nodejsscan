@@ -33,7 +33,6 @@ pipeline {
         stage('Run Grype scan') {
           steps {
             sh 'echo "Run Grype scans with SBOM"'
-            sh 'grype sbom:${JOB_NAME}-sbom.xml -o table --file ${JOB_NAME}-grype_table.txt'
             sh 'grype sbom:${JOB_NAME}-sbom.xml -o sarif --file ${JOB_NAME}-grype_sarif.json'
           }
         }
@@ -43,7 +42,8 @@ pipeline {
   }
   post {
     always {
-      step $class: 'ArtifactArchiver', artifacts: "${JOB_NAME}-*", allowEmptyArchive: true, followSymlinks: false
+      archiveArtifacts artifacts: "${JOB_NAME}-*", allowEmptyArchive: true, followSymlinks: false
+      recordIssues enabledForFailure: true, tool: sarif(pattern: '${JOB_NAME}-grype_sarif.json')
     }
   }
   options {
