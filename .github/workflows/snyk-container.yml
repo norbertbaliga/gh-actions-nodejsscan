@@ -3,8 +3,6 @@ name: Snyk NodeJS Scan (Container)
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
 
 permissions:
   contents: read
