@@ -6,6 +6,8 @@ The following Github Actions were added:
 * Snyk Container scanning
 * Snyk Code scanning (SAST)
 * Snyk Dependency scanning (SCA)
+* Semgrep scanning (CI)
+* Anchore Grype scanning
 
 The following Jenkins jobs were added:
 * Create SBOM with Syft
